@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VapeFinder | Local vape stores</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="topbar">
+        <div class="brand">
+          <span class="brand-badge">V</span>
+          VapeFinder
+        </div>
+        <div class="mini-tag">Local stores & websites</div>
+      </div>
+
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Local discovery</p>
+          <h1>Find vape shops, brands, and websites near you.</h1>
+          <p class="subtext">
+            Search by city, ZIP code, product, or your current location to find nearby stores carrying vapes and accessories.
+          </p>
+
+          <div class="hero-stats">
+            <div class="stat-card">
+              <span class="stat-value">12+</span>
+              <span class="stat-label">store listings</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">5 mi</span>
+              <span class="stat-label">quick radius search</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-panel">
+          <h3>Why people use it</h3>
+          <div class="feature-list">
+            <div class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <span>Find shops by city, ZIP, product type, or nearby distance.</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <span>See store ratings, delivery availability, and product options.</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-bullet">✓</span>
+              <span>Open each store website directly from the directory.</span>
+            </div>
+          </div>
+        </aside>
+      </header>
+
+      <section class="search-panel">
+        <form id="searchForm">
+          <div class="fields">
+            <label>
+              Search
+              <input type="text" id="query" placeholder="Store name or product" />
+            </label>
+            <label>
+              City
+              <input type="text" id="city" placeholder="Miami" />
+            </label>
+            <label>
+              State
+              <input type="text" id="state" placeholder="FL" />
+            </label>
+            <label>
+              ZIP
+              <input type="text" id="zip" placeholder="33101" />
+            </label>
+            <label>
+              Product
+              <input type="text" id="product" placeholder="Disposable vapes" />
+            </label>
+            <label>
+              Distance
+              <select id="distance">
+                <option value="">Any distance</option>
+                <option value="5">Within 5 miles</option>
+                <option value="10">Within 10 miles</option>
+                <option value="25">Within 25 miles</option>
+                <option value="50">Within 50 miles</option>
+                <option value="100">Within 100 miles</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="toolbar">
+            <label class="checkbox-row">
+              <input type="checkbox" id="deliveryOnly" />
+              Delivery available
+            </label>
+            <button type="button" id="nearMeButton" class="secondary-button">Use my location</button>
+            <button type="submit">Search stores</button>
+          </div>
+
+          <input type="hidden" id="lat" />
+          <input type="hidden" id="lng" />
+          <div id="locationStatus" class="location-status">Ready to search.</div>
+        </form>
+      </section>
+
+      <section>
+        <div class="results-header">
+          <h2>Results</h2>
+          <span id="resultCount">0 stores</span>
+        </div>
+        <div id="results" class="results"></div>
+      </section>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

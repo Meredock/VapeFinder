@@ -1,0 +1,27 @@
+{
+  "name": "vape-finder-cpanel",
+  "version": "1.0.0",
+  "description": "Vape store finder with local search, ratings, and website links",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "cpanel": "bash ./cpanel-start.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "vape",
+    "stores",
+    "finder",
+    "express",
+    "cpanel",
+    "directory"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
