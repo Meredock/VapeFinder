@@ -64,42 +64,106 @@
           <span id="builderPrice" class="builder-price-chip">$0.00</span>
         </div>
 
-        <form id="builderForm" class="builder-grid">
-          <label>
-            Device
-            <select id="builder-device"></select>
-          </label>
-          <label>
-            Flavor
-            <select id="builder-flavor"></select>
-          </label>
-          <label>
-            Nicotine
-            <select id="builder-nicotine"></select>
-          </label>
-          <label>
-            Battery
-            <select id="builder-battery"></select>
-          </label>
-          <label>
-            Coil
-            <select id="builder-coil"></select>
-          </label>
-          <label>
-            Airflow
-            <select id="builder-airflow"></select>
-          </label>
-          <label>
-            Color
-            <select id="builder-color"></select>
-          </label>
-          <label>
-            Extra
-            <select id="builder-extra"></select>
-          </label>
+        <div class="builder-layout">
+          <form id="builderForm" class="builder-grid">
+            <label>
+              Device
+              <select id="builder-device"></select>
+            </label>
+            <label>
+              Chassis
+              <select id="builder-chassis"></select>
+            </label>
+            <label>
+              Tank
+              <select id="builder-tank"></select>
+            </label>
+            <label>
+              Flavor
+              <select id="builder-flavor"></select>
+            </label>
+            <label>
+              Nicotine
+              <select id="builder-nicotine"></select>
+            </label>
+            <label>
+              Battery
+              <select id="builder-battery"></select>
+            </label>
+            <label>
+              Coil
+              <select id="builder-coil"></select>
+            </label>
+            <label>
+              Airflow
+              <select id="builder-airflow"></select>
+            </label>
+            <label>
+              Finish
+              <select id="builder-finish"></select>
+            </label>
+            <label>
+              Color
+              <select id="builder-color"></select>
+            </label>
+            <label>
+              Profile
+              <select id="builder-profile"></select>
+            </label>
+            <label>
+              Accessory
+              <select id="builder-accessory"></select>
+            </label>
+            <label>
+              Extra
+              <select id="builder-extra"></select>
+            </label>
 
-          <button type="submit" class="builder-button">Build my kit</button>
-        </form>
+            <div class="tune-panel">
+              <label class="slider-label" for="builder-output">Output power <strong id="outputValue">28W</strong></label>
+              <input id="builder-output" type="range" min="18" max="60" step="1" value="28" />
+
+              <label class="slider-label" for="builder-size">Body size <strong id="sizeValue">50%</strong></label>
+              <input id="builder-size" type="range" min="0" max="100" step="1" value="50" />
+
+              <label class="slider-label" for="builder-airflowBias">Airflow bias <strong id="airflowValue">50%</strong></label>
+              <input id="builder-airflowBias" type="range" min="0" max="100" step="1" value="50" />
+            </div>
+
+            <button type="submit" class="builder-button">Build my kit</button>
+          </form>
+
+          <div class="builder-visual">
+            <div class="vape-stage">
+              <div id="vapeVisual" class="vape-device">
+                <div class="vape-mouthpiece"></div>
+                <div class="vape-body">
+                  <div class="vape-screen">VAPE</div>
+                </div>
+                <div class="vape-base"></div>
+              </div>
+            </div>
+
+            <div class="preview-stats">
+              <div class="preview-stat">
+                <span>Length</span>
+                <strong id="previewLength">92mm</strong>
+              </div>
+              <div class="preview-stat">
+                <span>Width</span>
+                <strong id="previewWidth">19mm</strong>
+              </div>
+              <div class="preview-stat">
+                <span>Tank</span>
+                <strong id="previewCapacity">7.6mL</strong>
+              </div>
+              <div class="preview-stat">
+                <span>Output</span>
+                <strong id="previewPower">28W</strong>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div id="builderResult" class="builder-result">
           Select your setup and build a custom vape kit.

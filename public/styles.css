@@ -203,6 +203,13 @@ h2 {
   margin-bottom: 28px;
 }
 
+.builder-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+  gap: 22px;
+  align-items: start;
+}
+
 .builder-header {
   display: flex;
   align-items: center;
@@ -226,13 +233,152 @@ h2 {
 
 .builder-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 16px;
   align-items: end;
 }
 
 .builder-button {
-  margin-top: 16px;
+  margin-top: 14px;
+}
+
+.tune-panel {
+  grid-column: 1 / -1;
+  background: rgba(15, 23, 42, 0.46);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  padding: 14px 16px 12px;
+}
+
+.slider-label {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text);
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.tune-panel input[type="range"] {
+  width: 100%;
+  margin: 0 0 12px;
+  accent-color: #22c55e;
+}
+
+.builder-visual {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.9));
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.vape-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  padding: 12px 0 6px;
+}
+
+.vape-device {
+  --shell-color: #0f172a;
+  --body-length: 150px;
+  --body-width: 92px;
+  --body-height: 176px;
+  position: relative;
+  width: var(--body-width);
+  height: var(--body-height);
+  transform: translateY(-6px);
+}
+
+.vape-mouthpiece {
+  position: absolute;
+  left: 50%;
+  top: -32px;
+  width: 42px;
+  height: 36px;
+  transform: translateX(-50%);
+  border-radius: 12px 12px 10px 10px;
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.65), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.vape-body {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: var(--body-width);
+  height: var(--body-height);
+  transform: translateX(-50%);
+  border-radius: 28px 28px 26px 26px;
+  background: linear-gradient(180deg, var(--shell-color), rgba(15, 23, 42, 0.86));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 24px 38px rgba(2, 6, 23, 0.45);
+}
+
+.vape-body::before {
+  content: "";
+  position: absolute;
+  inset: 18px 20px 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vape-screen {
+  position: absolute;
+  inset: 36px 26px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(15, 23, 42, 0.45);
+  border-radius: 16px;
+}
+
+.vape-base {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 88px;
+  height: 46px;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.95), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(90px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.preview-stat {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.preview-stat span {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.preview-stat strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1rem;
+  color: white;
 }
 
 .builder-result {
@@ -248,7 +394,36 @@ h2 {
 .builder-summary {
   font-weight: 700;
   color: #f8fafc;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 12px 0 16px;
+}
+
+.metric-item {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.metric-item span {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.metric-item strong {
+  display: block;
+  margin-top: 6px;
+  color: white;
+  font-size: 1rem;
 }
 
 .builder-list {
