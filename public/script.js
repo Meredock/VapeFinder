@@ -3,6 +3,9 @@ const resultsContainer = document.getElementById('results');
 const resultCount = document.getElementById('resultCount');
 const nearMeButton = document.getElementById('nearMeButton');
 const locationStatus = document.getElementById('locationStatus');
+const builderForm = document.getElementById('builderForm');
+const builderResult = document.getElementById('builderResult');
+const builderPrice = document.getElementById('builderPrice');
 
 function buildParams() {
   const params = new URLSearchParams({
@@ -32,6 +35,83 @@ function buildParams() {
   }
 
   return params;
+}
+
+function renderOptions(select, options, placeholder = '') {
+  const items = options.map((option) => `<option value="${option.value}">${option.label}</option>`).join('');
+  select.innerHTML = placeholder ? `<option value="">${placeholder}</option>${items}` : items;
+}
+
+async function loadBuilderOptions() {
+  try {
+    const response = await fetch('/api/custom-vape/options');
+    const data = await response.json();
+    const { options } = data;
+
+    renderOptions(document.getElementById('builder-device'), options.devices);
+    renderOptions(document.getElementById('builder-flavor'), options.flavors);
+    renderOptions(document.getElementById('builder-nicotine'), options.nicotine);
+    renderOptions(document.getElementById('builder-battery'), options.battery);
+    renderOptions(document.getElementById('builder-coil'), options.coil);
+    renderOptions(document.getElementById('builder-airflow'), options.airflow);
+    renderOptions(document.getElementById('builder-color'), options.colors);
+    renderOptions(document.getElementById('builder-extra'), options.extras);
+
+    await buildCustomKit({ preventDefault() {} });
+  } catch (error) {
+    builderResult.textContent = 'The custom vape builder is unavailable right now. Please refresh later.';
+    console.error(error);
+  }
+}
+
+async function buildCustomKit(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  const payload = {
+    device: document.getElementById('builder-device').value,
+    flavor: document.getElementById('builder-flavor').value,
+    nicotine: document.getElementById('builder-nicotine').value,
+    battery: document.getElementById('builder-battery').value,
+    coil: document.getElementById('builder-coil').value,
+    airflow: document.getElementById('builder-airflow').value,
+    color: document.getElementById('builder-color').value,
+    extra: document.getElementById('builder-extra').value,
+  };
+
+  try {
+    const response = await fetch('/api/custom-vape/build', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    const result = data.result;
+
+    if (!result) {
+      builderResult.textContent = 'Your vape setup could not be built. Please try a different combination.';
+      return;
+    }
+
+    builderPrice.textContent = `$${result.price.toFixed(2)}`;
+    builderResult.innerHTML = `
+      <div class="builder-summary">${result.summary}</div>
+      <ul class="builder-list">
+        <li><strong>Device:</strong> ${result.device.label}</li>
+        <li><strong>Flavor:</strong> ${result.flavor.label}</li>
+        <li><strong>Nicotine:</strong> ${result.nicotine.label}</li>
+        <li><strong>Color:</strong> ${result.color.label}</li>
+        <li><strong>Extra:</strong> ${result.extra.label}</li>
+      </ul>
+    `;
+  } catch (error) {
+    builderResult.textContent = 'We hit an error while building your vape. Please try again.';
+    console.error(error);
+  }
 }
 
 async function searchStores(event) {
@@ -120,4 +200,7 @@ nearMeButton.addEventListener('click', () => {
 });
 
 form.addEventListener('submit', searchStores);
+builderForm.addEventListener('submit', buildCustomKit);
+
 searchStores({ preventDefault() {} });
+loadBuilderOptions();

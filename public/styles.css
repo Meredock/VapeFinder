@@ -102,11 +102,20 @@ img {
   font-weight: 700;
 }
 
+.eyebrow.soft {
+  color: #bfdbfe;
+}
+
 h1 {
   margin: 0;
   font-size: clamp(2.4rem, 5vw, 4.1rem);
   line-height: 1.05;
   letter-spacing: -0.04em;
+}
+
+h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
 }
 
 .subtext {
@@ -184,6 +193,7 @@ h1 {
   flex-shrink: 0;
 }
 
+.builder-panel,
 .search-panel {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -191,6 +201,60 @@ h1 {
   padding: 22px;
   box-shadow: 0 22px 60px rgba(15, 23, 42, 0.22);
   margin-bottom: 28px;
+}
+
+.builder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.builder-price-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #bbf7d0;
+  font-weight: 700;
+}
+
+.builder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.builder-button {
+  margin-top: 16px;
+}
+
+.builder-result {
+  margin-top: 20px;
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 18px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.builder-summary {
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 10px;
+}
+
+.builder-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
 }
 
 .fields {
@@ -415,6 +479,7 @@ button:hover {
     flex-direction: column;
   }
 
+  .builder-header,
   .results-header {
     flex-direction: column;
     align-items: flex-start;

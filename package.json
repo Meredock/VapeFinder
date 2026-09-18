@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "cpanel": "bash ./cpanel-start.sh"
+    "test": "node --test",
+    "cpanel": "bash ./cpanel-start.sh",
+    "deploy:cpanel": "bash ./scripts/push-to-cpanel.sh"
   },
   "engines": {
     "node": ">=18"

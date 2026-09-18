@@ -5,6 +5,55 @@ const { getStores, ZIP_COORDINATES } = require('./data/storeRepository');
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
+const CUSTOM_VAPE_OPTIONS = {
+  devices: [
+    { value: 'pod', label: 'Pod System', price: 24 },
+    { value: 'pen', label: 'Pen Kit', price: 32 },
+    { value: 'box', label: 'Box Mod', price: 48 },
+    { value: 'disposable', label: 'Disposable', price: 18 },
+  ],
+  flavors: [
+    { value: 'blueberry', label: 'Blueberry Burst', price: 8 },
+    { value: 'mango', label: 'Mango Ice', price: 8 },
+    { value: 'strawberry', label: 'Strawberry Cream', price: 8 },
+    { value: 'mint', label: 'Mint Slush', price: 7 },
+    { value: 'grape', label: 'Grape Soda', price: 8 },
+  ],
+  nicotine: [
+    { value: '0mg', label: '0mg', price: 0 },
+    { value: '3mg', label: '3mg', price: 0 },
+    { value: '6mg', label: '6mg', price: 0 },
+    { value: '20mg', label: '20mg', price: 0 },
+  ],
+  battery: [
+    { value: '650mAh', label: '650mAh', price: 5 },
+    { value: '950mAh', label: '950mAh', price: 8 },
+    { value: '1500mAh', label: '1500mAh', price: 12 },
+  ],
+  coil: [
+    { value: 'mesh', label: 'Mesh Coil', price: 6 },
+    { value: 'dual', label: 'Dual Coil', price: 9 },
+    { value: 'ceramic', label: 'Ceramic Core', price: 7 },
+  ],
+  airflow: [
+    { value: 'tight', label: 'Tight Draw', price: 0 },
+    { value: 'balanced', label: 'Balanced', price: 0 },
+    { value: 'loose', label: 'Loose Draw', price: 0 },
+  ],
+  colors: [
+    { value: 'midnight', label: 'Midnight', price: 0 },
+    { value: 'slate', label: 'Slate Gray', price: 0 },
+    { value: 'crimson', label: 'Crimson Red', price: 0 },
+    { value: 'sage', label: 'Sage Green', price: 0 },
+  ],
+  extras: [
+    { value: 'none', label: 'No extra', price: 0 },
+    { value: 'travel-case', label: 'Travel Case', price: 18 },
+    { value: 'usb-cable', label: 'USB-C Cable', price: 12 },
+    { value: 'spare-coils', label: 'Spare Coils', price: 16 },
+  ],
+};
+
 app.set('trust proxy', true);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -48,12 +97,66 @@ function parseBoolean(value) {
   return false;
 }
 
+function getOptionByValue(options, value, fallbackValue) {
+  const list = Array.isArray(options) ? options : [];
+  return list.find((item) => item.value === value) || list.find((item) => item.value === fallbackValue) || list[0];
+}
+
+function buildCustomVape(selection = {}) {
+  const device = getOptionByValue(CUSTOM_VAPE_OPTIONS.devices, selection.device, 'pod');
+  const flavor = getOptionByValue(CUSTOM_VAPE_OPTIONS.flavors, selection.flavor, 'blueberry');
+  const nicotine = getOptionByValue(CUSTOM_VAPE_OPTIONS.nicotine, selection.nicotine, '3mg');
+  const battery = getOptionByValue(CUSTOM_VAPE_OPTIONS.battery, selection.battery, '950mAh');
+  const coil = getOptionByValue(CUSTOM_VAPE_OPTIONS.coil, selection.coil, 'mesh');
+  const airflow = getOptionByValue(CUSTOM_VAPE_OPTIONS.airflow, selection.airflow, 'balanced');
+  const color = getOptionByValue(CUSTOM_VAPE_OPTIONS.colors, selection.color, 'midnight');
+  const extra = getOptionByValue(CUSTOM_VAPE_OPTIONS.extras, selection.extra, 'none');
+
+  const price = [device, flavor, battery, coil, extra].reduce((total, item) => {
+    return total + Number(item.price || 0);
+  }, 0);
+
+  const summary = `${flavor.label} ${device.label} with ${nicotine.label} nicotine, ${battery.label} battery, ${airflow.label}, ${color.label} finish${extra.value === 'none' ? '' : ` + ${extra.label}`}.`;
+
+  return {
+    device,
+    flavor,
+    nicotine,
+    battery,
+    coil,
+    airflow,
+    color,
+    extra,
+    price: Number(price.toFixed(2)),
+    summary,
+  };
+}
+
+function getVapeBuilderOptions() {
+  return JSON.parse(JSON.stringify(CUSTOM_VAPE_OPTIONS));
+}
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     app: 'vape-finder',
     environment: process.env.NODE_ENV || 'development',
     timestamp: new Date().toISOString(),
+  });
+});
+
+app.get('/api/custom-vape/options', (req, res) => {
+  res.json({
+    options: getVapeBuilderOptions(),
+  });
+});
+
+app.post('/api/custom-vape/build', (req, res) => {
+  const result = buildCustomVape(req.body || {});
+
+  res.json({
+    success: true,
+    result,
   });
 });
 
@@ -152,6 +255,14 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Vape finder app is running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Vape finder app is running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = {
+  app,
+  buildCustomVape,
+  getVapeBuilderOptions,
+};
