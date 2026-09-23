@@ -333,8 +333,18 @@ app.get('*', (req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Vape finder app is running on http://localhost:${PORT}`);
+  });
+
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+      console.error(`Port ${PORT} is already in use. Stop the existing process or start the app on a different port, for example: PORT=3001 npm start`);
+      process.exit(1);
+    }
+
+    console.error('Failed to start the Vape Finder server:', error.message);
+    process.exit(1);
   });
 }
 
