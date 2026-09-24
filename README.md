@@ -53,6 +53,10 @@ You can add or edit real store entries there.
    ```
 7. Save and start the app.
 
+### GitHub Actions deploy secrets
+
+The deploy workflow expects `CPANEL_HOST`, `CPANEL_USERNAME`, `CPANEL_PATH`, and `CPANEL_SSH_PRIVATE_KEY`. If the SSH key is encrypted, also add `CPANEL_SSH_PASSPHRASE` so the workflow can unlock the key before running `rsync` and `ssh`.
+
 ## Important notes
 
 - This app is ready for a cPanel Node.js environment.

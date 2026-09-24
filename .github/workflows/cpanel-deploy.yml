@@ -13,10 +13,38 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
+      - name: Set up SSH access
+        env:
+          CPANEL_SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
+          CPANEL_SSH_PASSPHRASE: ${{ secrets.CPANEL_SSH_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$CPANEL_SSH_PRIVATE_KEY" > ~/.ssh/cpanel_key
+          chmod 600 ~/.ssh/cpanel_key
+
+          eval "$(ssh-agent -s)"
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> "$GITHUB_ENV"
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> "$GITHUB_ENV"
+
+          if ssh-keygen -y -P "" -f ~/.ssh/cpanel_key >/dev/null 2>&1; then
+            ssh-add ~/.ssh/cpanel_key
+            exit 0
+          fi
+
+          if [[ -z "${CPANEL_SSH_PASSPHRASE:-}" ]]; then
+            echo "CPANEL_SSH_PRIVATE_KEY is passphrase-protected. Set the CPANEL_SSH_PASSPHRASE secret for this workflow."
+            exit 1
+          fi
+
+          cat > /tmp/cpanel-ssh-askpass.sh <<'EOF'
+          #!/usr/bin/env bash
+          printf '%s\n' "$CPANEL_SSH_PASSPHRASE"
+          EOF
+          chmod 700 /tmp/cpanel-ssh-askpass.sh
+
+          DISPLAY=:0 SSH_ASKPASS=/tmp/cpanel-ssh-askpass.sh SSH_ASKPASS_REQUIRE=force setsid ssh-add ~/.ssh/cpanel_key </dev/null
 
       - name: Add cPanel host key
         run: |
